@@ -469,7 +469,7 @@ unsigned long timer(unsigned int p) { // p = timer/pause length in ms
       f.print(",");
       f.print(highCalibration);
       f.close();
-      Serial.println("Data saved to /calibration.csv.");
+      Serial.println("Data saved to /sys/calibration.csv.");
     }
 
     toCalibrate = 0;
