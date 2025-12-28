@@ -1,0 +1,11 @@
+Parts list for pressure automation PCB:
+	2x LED (1x red, 1x green)
+	1x 2.1 mm barrel jack connector (3-pin, GND, VCC, MNT)
+	1x DRV8825 stepper motor driver (Pololu-style)
+	1x 6847A analog pressure sensor
+	3x resistors (2x 470, 1x 1.5k)
+	1x 5 mm separation 2-screw terminal connector
+	1x 4-pin 2mm single-row connector (JST)
+	1x TIP120 power transistor
+	1x 100u >=35 V electrolytic capacitor
+	32x pins (pin row headers)
