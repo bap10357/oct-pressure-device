@@ -189,7 +189,7 @@ int motorTurn(int x) { // x = next desired motor position, in degrees
   }
 
   stepsToTurn = abs(stepsToTurn);
-  digitalWrite(MOTSLEEP_PIN, 0); // Turn on stepper motor driver
+  digitalWrite(MOTSLEEP_PIN, 1); // Turn on stepper motor driver
   return stepsToTurn;
 }
 
@@ -200,6 +200,7 @@ void motorStep() { // Does not take input, just steps the motor if necessary. Is
     lastStepToggle = micros();
 
     if(lastMotorState && !digitalRead(MOTFAULT_PIN)) { // Kill program if motor overheats or draws too much current
+      digitalWrite(MOTSLEEP_PIN, 0);
       digitalWrite(MOTFLTLED_PIN, 0);
       Serial.println("Fatal motor fault. Program stopped.");
       while(true) delay(1000);
@@ -491,12 +492,12 @@ void setup() {
   digitalWrite(MOTFLTLED_PIN, 1); // Disable motor fault LED at startup
   digitalWrite(STEP_PIN, 0);
   digitalWrite(DIR_PIN, 0);
-  digitalWrite(MOTSLEEP_PIN, 0); // Turn stepper motor driver on to avoid startup fault
+  digitalWrite(MOTSLEEP_PIN, 1); // Turn stepper motor driver on to avoid startup fault
   digitalWrite(SOLENOID_PIN, 0);
 
   delay(1000); // Wait until serial terminal is ready for connection on other end
 
-  digitalWrite(MOTSLEEP_PIN, 1); // Disable stepper motor driver
+  digitalWrite(MOTSLEEP_PIN, 0); // Disable stepper motor driver
 
   Serial.begin(115200);
 
@@ -896,7 +897,7 @@ void loop() {
   if(!stepsToTurn && lastMotorState && instIndex) readyToExec = 1; // Resume program execution after blocking commands if not over
   if(!timerState && lastTimerState && instIndex) readyToExec = 1;
 
-  if(!stepsToTurn && lastMotorState) digitalWrite(MOTSLEEP_PIN, 1); // Turn stepper motor driver off after completed turn
+  if(!stepsToTurn && lastMotorState) digitalWrite(MOTSLEEP_PIN, 0); // Turn stepper motor driver off after completed turn
 
   // CSV data out in loop
   if(millis() - lastRefresh >= 100 && recState) { // 10 Hz recording speed
