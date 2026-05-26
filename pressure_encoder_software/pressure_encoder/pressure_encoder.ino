@@ -1,6 +1,6 @@
 /*
 
-Written by Brady Perkins, December 2025
+Written by Brady Perkins, December 2025 (updated May 2026)
 for Asia University Biodesign Lab
 
 Supports Arduino Uno,
@@ -11,7 +11,7 @@ Arduino ESP32-S3 dev boards (with pin adapter, LittleFS storage, no SD functiona
 
 // Constants
 
-#define TURN_LIMIT 960 // Outward turning limit, in degrees
+#define TURN_LIMIT 720 // Outward turning limit, in degrees
 #define SPEED_LIMIT 400 // Motor speed limit, in degrees/sec
 #define CALIBRATION_POINT 20 // Calibration point, in kPa
 
@@ -229,7 +229,6 @@ unsigned long solenoid(unsigned int t) { // t = time in ms
 
 unsigned long record(unsigned int k) { // k = number of OCT frames @ 25 Hz
   if(k) {
-    unsigned long stopTime = millis() + ((1000 * (unsigned long)k) / 25);
     startRecMillis = millis();
     recState = 1;
     #if PLATFORM_ESP32
@@ -267,6 +266,7 @@ unsigned long record(unsigned int k) { // k = number of OCT frames @ 25 Hz
     }
     #endif
     Serial.println("Begin CSV.");
+    unsigned long stopTime = millis() + ((1000 * (unsigned long)k) / 20); // Assume framerate of 20 Hz instead of 25 to compensate for program slowdown on Arduino/ESP32
     return stopTime;
   } else {
     recState = 0;
